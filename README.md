@@ -1,2 +1,9 @@
-# taller-linux-2026
-Trabajos del Taller Linux
+# Taller linux 2026
+
+Trabajos realizados con ansible durante el Taller
+
+## Contenido
+
+- Inventario
+- Playbooks
+
