@@ -1,6 +1,6 @@
 # Taller linux 2026
 
-Trabajos realizados con ansible durante el Taller
+Trabajos realizados con ansible durante el Taller.
 
 ## Contenido
 
