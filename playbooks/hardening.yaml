@@ -1,0 +1,8 @@
+---
+  name: Initial ubuntu hardening
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+
+  - name: Update installed packages
