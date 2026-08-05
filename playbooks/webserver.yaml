@@ -1,0 +1,56 @@
+---
+- name: Deploy webserver and PHP application
+  hosts: centos
+  become: true
+
+  vars_files:
+    - ../vars/database.yaml
+
+  vars:
+    packages:
+      - httpd
+      - php
+      - php-fpm
+      - php-mysqlnd
+      - python3-libsemanage  
+    services:
+      - httpd
+      - php-fpm
+
+  tasks:
+    - name: Install HTTP and PHP packages
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: present
+
+    - name: Enable and start HTTPD and PHP-FPM services
+      ansible.builtin.systemd_service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop: "{{ services }}"
+
+    - name: Allow HTTP service in firewalld
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: Install PHP application
+      ansible.builtin.template:
+        src: ../templates/cumple.j2
+        dest: /var/www/html/index.php
+        owner: apache
+        group: apache
+        mode: "0644"
+    
+    - name: Set SELinux booleans for database access from Apache
+      ansible.posix.seboolean:
+        name: "{{ item }}"
+        state: true
+        persistent: true
+      loop:
+        - httpd_can_network_connect
+        - httpd_can_network_connect_db  
+
