@@ -1,0 +1,65 @@
+---
+- name: Instalar Apache y PHP
+  hosts: centos
+  become: true
+
+  tasks:
+
+    - name: Actualizar paquetes
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      notify: Reiniciar servidores
+
+    - name: Instalar Apache, PHP, PHP-FPM y MySQL
+      ansible.builtin.dnf:
+        name:
+          - httpd
+          - php
+          - php-fpm
+          - php-mysqlnd
+        state: present
+
+    - name: Activar e iniciar Apache
+      ansible.builtin.systemd:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: Activar e iniciar PHP-FPM
+      ansible.builtin.systemd:
+        name: php-fpm
+        enabled: true
+        state: started
+
+    - name: Instalar firewalld
+      ansible.builtin.dnf:
+        name: firewalld
+        state: present
+
+    - name: Activar e iniciar firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: Permitir tráfico HTTP
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Permitir tráfico HTTPS
+      ansible.posix.firewalld:
+        service: https
+        permanent: true
+        state: enabled
+        immediate: true
+
+
+  handlers:
+
+    - name: Reiniciar servidores
+      ansible.builtin.reboot:
+        reboot_timeout: 300
