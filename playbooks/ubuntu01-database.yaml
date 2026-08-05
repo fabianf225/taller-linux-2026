@@ -1,0 +1,51 @@
+---
+- name: Configure database server
+  hosts: ubuntu01
+  become: true
+
+  vars_files:
+    - ../vars/database.yaml
+
+  tasks:
+
+    - name: Install MariaDB server
+      ansible.builtin.apt:
+        name:
+          - mariadb-server
+          - python3-pymysql
+        state: present
+        update_cache: true
+
+    - name: Enable and start MariaDB
+      ansible.builtin.systemd_service:
+        name: mariadb
+        state: started
+        enabled: true
+
+    - name: Create database
+      ansible.mysql.mysql_db:
+        name: "{{ DB_DBASE }}"
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Create database user
+      ansible.mysql.mysql_user:
+        name: "{{ DB_USER }}"
+        password: "{{ DB_PASS }}"
+        priv: "{{ DB_DBASE }}.*:ALL"
+        host: "%"
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Copy SQL file
+      ansible.builtin.template:
+        src: cumple.sql.j2
+        dest: /tmp/cumple.sql
+        mode: "0644"
+
+    - name: Import database structure and data
+      ansible.mysql.mysql_db:
+        name: "{{ DB_DBASE }}"
+        state: import
+        target: /tmp/cumple.sql
+        login_unix_socket: /run/mysqld/mysqld.sock
