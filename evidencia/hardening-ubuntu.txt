@@ -1,0 +1,49 @@
+PLAY [Initial ubuntu hardening] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [Update installed packages] ***********************************************
+ok: [ubuntu02]
+ok: [ubuntu01]
+
+TASK [UFW is installed] ********************************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [Reset UFW to default] ****************************************************
+changed: [ubuntu01]
+changed: [ubuntu02]
+
+TASK [Define autgoing connection policy] ***************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [DEfine incoming connection policy] ***************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [Allow ssh connection and enable ufw] *************************************
+changed: [ubuntu01]
+changed: [ubuntu02]
+
+TASK [fail2ban is installed] ***************************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [copy jail.local config] **************************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+TASK [fail2ban started and enabled] ********************************************
+ok: [ubuntu01]
+ok: [ubuntu02]
+
+PLAY RECAP *********************************************************************
+ubuntu01                   : ok=10   changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ubuntu02                   : ok=10   changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+
+

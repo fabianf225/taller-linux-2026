@@ -43,13 +43,20 @@ Tabla "cumpleanios"
 | `vars/`        | Variables de la base de datos protegidas mediante Ansible Vault          |
 | `collections/` | Archivo `requirements.yaml` con las collections requeridas               |
 | `.git/`        | Historial y configuración del repositorio Git                            |
+| `evidencia/`   | Salidas de ejecución y capturas utilizadas como evidencia del trabajo    |
 
-### Archivos principales
+
+## Archivos principales
 
 ```text
 taller-linux-2026/
 ├── collections/
 │   └── requirements.yaml
+├── evidencia/
+│   ├── appfuncionando.txt
+│   ├── base-datos.txt
+│   ├── hardening-ubuntu.txt
+│   └── servidor-web.txt
 ├── inventory/
 │   ├── hosts.ini
 │   └── group_vars/
@@ -70,6 +77,7 @@ taller-linux-2026/
 │   └── database.yaml
 ├── LICENSE
 └── README.md
+
 ```
 
 Los archivos `webserver.yaml`, `cumple.php.j2` y `mariadb.cnf.j2` corresponden a archivos auxiliares o versiones anteriores del desarrollo. La ejecución principal se realiza mediante `site.yaml`.
@@ -110,31 +118,25 @@ El grupo `centos` contiene dos hosts y el grupo `ubuntu` contiene dos hosts. La 
 
 Se utiliza un nodo de control con CentOS Stream 9 y Ansible instalado mediante `pipx`.
 
-Instalar `pipx`:
+Instalamos `pipx`:
 
 ```bash
 sudo dnf install pipx -y
 ```
 
-Configurar el PATH:
+Configuramos el PATH:
 
 ```bash
 pipx ensurepath
 ```
 
-Instalar Ansible:
+Instalamos Ansible:
 
 ```bash
 pipx install ansible-core
 ```
 
-Cerrar y volver a abrir la terminal para que el PATH quede actualizado.
-
-Verificar la instalación:
-
-```bash
-ansible --version
-```
+Cerramos y volvemos a abrir la terminal para que el PATH quede actualizado.
 
 ### Collections
 
@@ -144,7 +146,7 @@ Las collections requeridas se encuentran en:
 collections/requirements.yaml
 ```
 
-Instalarlas con:
+Las instalamos con:
 
 ```bash
 ansible-galaxy collection install -r collections/requirements.yaml
@@ -175,7 +177,7 @@ ssh-copy-id sysadmin@10.0.2.100
 ssh-copy-id sysadmin@10.0.2.101
 ```
 
-Verificar la conectividad desde Ansible:
+Verificamos la conectividad desde Ansible:
 
 ```bash
 ansible all -i inventory/hosts.ini -m ping
@@ -193,7 +195,7 @@ Este archivo está cifrado mediante Ansible Vault y no debe contener informació
 
 Las variables utilizadas son:
 
-```yaml
+```text
 DB_SERVER
 DB_USER
 DB_PASS
@@ -218,10 +220,6 @@ Durante la ejecución del playbook se utiliza:
 --ask-vault-pass
 ```
 
-No se deben almacenar en Git contraseñas reales, claves privadas ni otros datos sensibles.
-
-## Uso
-
 ### Verificar conectividad
 
 Antes de ejecutar la automatización se puede verificar la conectividad con los hosts:
@@ -230,7 +228,7 @@ Antes de ejecutar la automatización se puede verificar la conectividad con los 
 ansible all -i inventory/hosts.ini -m ping
 ```
 
-### Ejecutar la solución completa
+## Ejecutar la solución completa
 
 El playbook principal es:
 
@@ -556,42 +554,22 @@ La creación de la tabla y los datos iniciales también se controla para evitar 
 
 ## Evidencia
 
-Para la entrega se recomienda conservar capturas o salidas de:
+Se encontrarán los siguientes puntos:
 
-1. Ejecución exitosa del playbook completo.
-2. Estado de Apache.
-3. Estado de PHP-FPM.
-4. Estado de MariaDB.
-5. Configuración de los firewalls.
-6. Aplicación funcionando mediante navegador.
-7. Lista de cumpleaños mostrada por la aplicación.
-8. Segunda ejecución del playbook mostrando idempotencia.
-9. `PLAY RECAP` de la segunda ejecución.
+1. Ejecución exitosa del playbook de hardening sobre los servidores Ubuntu.
+2. Configuración de los servidores web CentOS mediante Apache, PHP-FPM, Firewalld y SELinux.
+3. Configuración del servidor de base de datos Ubuntu mediante MariaDB.
+4. Creación de la base de datos `cumples`, esquema y datos iniciales.
+5. Configuración del acceso de MariaDB desde el servidor de aplicación.
+6. Configuración de UFW y Fail2ban en los servidores Ubuntu.
+7. Ejecuciones posteriores de los playbooks mostrando idempotencia.
+8. `PLAY RECAP` de las ejecuciones, sin hosts inaccesibles ni tareas fallidas.
 
-## Git
+Las salidas de ejecución correspondientes se encuentran en la carpeta:
 
-El proyecto se mantiene en un repositorio Git.
-
-Se recomienda verificar antes de la entrega:
-
-```bash
-git status
+```text
+evidencia/
 ```
-
-y:
-
-```bash
-git log --oneline --decorate
-```
-
-El historial debe reflejar el avance del desarrollo mediante varios commits.
-
-No se deben subir al repositorio:
-
-* Contraseñas reales.
-* Claves privadas SSH.
-* Contraseñas de Ansible Vault.
-* Otros datos sensibles.
 
 ## Uso de Inteligencia Artificial Generativa
 
@@ -599,5 +577,19 @@ Se utilizó inteligencia artificial generativa como apoyo y herramienta de consu
 
 También se utilizó la documentación oficial de Ansible como referencia.
 
-Todo el contenido utilizado en la solución fue revisado, adaptado y probado por el equipo sobre los servidores reales del laboratorio antes de incorporarlo al repositorio.
+Todo el contenido utilizado en la solución fue revisado, adaptado y probado sobre los servidores reales del laboratorio antes de incorporarlo al repositorio.
+
+## **Integrante**
+
+**Fabián Ferreira**
+
+Estudiante Nº 267484
+
+Correo: [JF267484@fi365.ort.edu.uy](mailto:JF267484@fi365.ort.edu.uy)
+
+---
+
+## **Docente**
+
+**Enrique Verdes**
 

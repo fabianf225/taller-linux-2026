@@ -1,0 +1,36 @@
+
+PLAY [Configure database server] ***********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ubuntu01]
+
+TASK [Install MariaDB server] **************************************************
+ok: [ubuntu01]
+
+TASK [Start and enable MariaDB] ************************************************
+ok: [ubuntu01]
+
+TASK [Install PyMySQL] *********************************************************
+ok: [ubuntu01]
+
+TASK [Create cumples database] *************************************************
+ok: [ubuntu01]
+
+TASK [Copy database schema and initial data] ***********************************
+ok: [ubuntu01]
+
+TASK [Import schema and initial data] ******************************************
+changed: [ubuntu01]
+
+TASK [Create application database user] ****************************************
+ok: [ubuntu01]
+
+TASK [Configure MariaDB to listen on all interfaces] ***************************
+ok: [ubuntu01]
+
+TASK [Allow MariaDB access only from app server] *******************************
+ok: [ubuntu01]
+
+PLAY RECAP *********************************************************************
+ubuntu01                   : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

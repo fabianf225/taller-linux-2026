@@ -1,0 +1,57 @@
+
+PLAY [Initial Centos Config] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [centos02]
+ok: [centos01]
+
+TASK [Install Apache] **********************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [start and enable apache] *************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [install php_fpm] *********************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [start and enable php] ****************************************************
+ok: [centos02]
+ok: [centos01]
+
+TASK [instal php and php-mysqlnd] **********************************************
+ok: [centos02]
+ok: [centos01]
+
+TASK [install firewall] ********************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [start and enable firewalld] **********************************************
+ok: [centos02]
+ok: [centos01]
+
+TASK [Allow HTTP through firewalld] ********************************************
+ok: [centos02]
+ok: [centos01]
+
+TASK [Istall php application] **************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [Install Python] **********************************************************
+ok: [centos01]
+ok: [centos02]
+
+TASK [Enable required SElinux booleans for httpd] ******************************
+ok: [centos02] => (item=httpd_can_network_connect_db)
+ok: [centos01] => (item=httpd_can_network_connect_db)
+ok: [centos01] => (item=httpd_can_network_connect)
+ok: [centos02] => (item=httpd_can_network_connect)
+
+PLAY RECAP *********************************************************************
+centos01                   : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+centos02                   : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
