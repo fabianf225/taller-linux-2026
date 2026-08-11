@@ -1,0 +1,6 @@
+---
+- name: Configurar servidor de base de datos
+  ansible.builtin.import_playbook: ubuntu01-database.yaml
+
+- name: Configurar servidor de aplicación
+  ansible.builtin.import_playbook: centos.yaml

@@ -1,15 +1,30 @@
-DROP DATABASE IF EXISTS {{ DB_DBASE }};
-CREATE DATABASE {{ DB_DBASE }};
+CREATE DATABASE IF NOT EXISTS {{ DB_DBASE }};
 
 USE {{ DB_DBASE }};
 
-CREATE TABLE cumpleanios (
+CREATE TABLE IF NOT EXISTS cumpleanios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(100),
   fecha DATE
 );
 
-INSERT INTO cumpleanios (nombre, fecha) VALUES
-('Frodo Baggins', '2005-01-14'),
-('Aragorn', '2004-02-09'),
-('Arwen Undomiel', '1994-12-09');
+INSERT INTO cumpleanios (nombre, fecha)
+SELECT 'Frodo Baggins', '2005-01-14'
+WHERE NOT EXISTS (
+  SELECT 1 FROM cumpleanios
+  WHERE nombre = 'Frodo Baggins'
+);
+
+INSERT INTO cumpleanios (nombre, fecha)
+SELECT 'Aragorn', '2004-02-09'
+WHERE NOT EXISTS (
+  SELECT 1 FROM cumpleanios
+  WHERE nombre = 'Aragorn'
+);
+
+INSERT INTO cumpleanios (nombre, fecha)
+SELECT 'Arwen Undomiel', '1994-12-09'
+WHERE NOT EXISTS (
+  SELECT 1 FROM cumpleanios
+  WHERE nombre = 'Arwen Undomiel'
+);
